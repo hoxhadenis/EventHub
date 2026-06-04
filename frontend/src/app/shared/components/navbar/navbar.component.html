@@ -1,0 +1,70 @@
+<nav class="bg-indigo-600 shadow-md fixed w-full top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      
+      <div class="flex items-center">
+        <a routerLink="/" class="text-white font-bold text-xl tracking-wider">
+          <span class="text-indigo-200">Event</span>Hub
+        </a>
+      </div>
+
+      <div class="hidden md:block">
+        <div class="ml-10 flex items-baseline space-x-4">
+          <a routerLink="/" class="text-white hover:bg-indigo-500 px-3 py-2 rounded-md text-sm font-medium">Home</a>
+          
+          <ng-container *ngIf="(currentUser$ | async) as user; else loginTemplate">
+            
+            <a *ngIf="user.role === 'user'" routerLink="/my-tickets" class="text-indigo-100 hover:bg-indigo-500 px-3 py-2 rounded-md text-sm font-medium">I miei biglietti</a>
+            
+            <a *ngIf="user.role === 'organizer' || user.role === 'admin'" routerLink="/organizer/dashboard" class="text-indigo-100 hover:bg-indigo-500 px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
+            
+            <a *ngIf="user.role === 'admin'" routerLink="/admin/users" class="text-indigo-100 hover:bg-indigo-500 px-3 py-2 rounded-md text-sm font-medium">Gestione Utenti</a>
+
+            <div class="border-l border-indigo-400 ml-2 pl-4 flex items-center space-x-4">
+              <a routerLink="/profile" class="text-indigo-100 hover:text-white text-sm">
+                Ciao, <strong>{{ user.username }}</strong>
+              </a>
+              <button (click)="logout()" class="bg-indigo-700 hover:bg-indigo-800 text-white px-4 py-2 rounded-md text-sm font-medium transition">
+                Esci
+              </button>
+            </div>
+          </ng-container>
+
+          <ng-template #loginTemplate>
+            <a routerLink="/login" class="text-indigo-100 hover:bg-indigo-500 px-3 py-2 rounded-md text-sm font-medium">Accedi</a>
+          </ng-template>
+        </div>
+      </div>
+
+      <div class="-mr-2 flex md:hidden">
+        <button (click)="toggleMenu()" class="bg-indigo-600 inline-flex items-center justify-center p-2 rounded-md text-indigo-200 hover:text-white hover:bg-indigo-500 focus:outline-none">
+          <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+            <path *ngIf="!isMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            <path *ngIf="isMenuOpen" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="isMenuOpen" class="md:hidden bg-indigo-600 pb-3 pt-2">
+    <div class="px-2 space-y-1 sm:px-3">
+      <a routerLink="/" (click)="toggleMenu()" class="text-white block px-3 py-2 rounded-md text-base font-medium">Home</a>
+      
+      <ng-container *ngIf="(currentUser$ | async) as user; else mobileLogin">
+        <a *ngIf="user.role === 'user'" routerLink="/my-tickets" (click)="toggleMenu()" class="text-indigo-100 block px-3 py-2 rounded-md text-base font-medium">I miei biglietti</a>
+        <a *ngIf="user.role === 'organizer' || user.role === 'admin'" routerLink="/organizer/dashboard" (click)="toggleMenu()" class="text-indigo-100 block px-3 py-2 rounded-md text-base font-medium">Dashboard</a>
+        
+        <div class="border-t border-indigo-500 mt-2 pt-2">
+          <p class="px-3 py-2 text-sm text-indigo-200">Loggato come: {{ user.username }}</p>
+          <a routerLink="/profile" (click)="toggleMenu()" class="text-indigo-100 block px-3 py-2 rounded-md text-base font-medium">Profilo</a>
+          <button (click)="logout()" class="w-full text-left text-white bg-indigo-700 block px-3 py-2 rounded-md text-base font-medium mt-1">Esci</button>
+        </div>
+      </ng-container>
+
+      <ng-template #mobileLogin>
+        <a routerLink="/login" (click)="toggleMenu()" class="text-white bg-indigo-700 block px-3 py-2 rounded-md text-base font-medium mt-2">Accedi / Registrati</a>
+      </ng-template>
+    </div>
+  </div>
+</nav>

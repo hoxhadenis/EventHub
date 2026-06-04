@@ -1,0 +1,14 @@
+# Ambienti virtuali
+backend/venv/
+backend/__pycache__/
+*.pyc
+
+# Database locale
+backend/eventhub.db
+
+# Variabili d'ambiente
+backend/.env
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
